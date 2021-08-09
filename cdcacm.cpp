@@ -318,7 +318,8 @@ uint8_t ACM::ClearCommFeature(uint16_t fid) {
 }
 
 uint8_t ACM::SetLineCoding(const LINE_CODING *dataptr) {
-        uint8_t rv = ( pUsb->ctrlReq(bAddress, 0, bmREQ_CDCOUT, CDC_SET_LINE_CODING, 0x00, 0x00, bControlIface, sizeof (LINE_CODING), sizeof (LINE_CODING), (uint8_t*)dataptr, NULL));
+        uint8_t lineCodingSize = 7;
+        uint8_t rv = ( pUsb->ctrlReq(bAddress, 0, bmREQ_CDCOUT, CDC_SET_LINE_CODING, 0x00, 0x00, bControlIface, lineCodingSize, lineCodingSize, (uint8_t*)dataptr, NULL));
         if(rv && rv != hrNAK) {
                 Release();
         }
@@ -326,6 +327,7 @@ uint8_t ACM::SetLineCoding(const LINE_CODING *dataptr) {
 }
 
 uint8_t ACM::GetLineCoding(LINE_CODING *dataptr) {
+        uint8_t lineCodingSize = 7;
         uint8_t rv = ( pUsb->ctrlReq(bAddress, 0, bmREQ_CDCIN, CDC_GET_LINE_CODING, 0x00, 0x00, bControlIface, sizeof (LINE_CODING), sizeof (LINE_CODING), (uint8_t*)dataptr, NULL));
         if(rv && rv != hrNAK) {
                 Release();
